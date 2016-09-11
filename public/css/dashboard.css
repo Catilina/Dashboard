@@ -41,8 +41,8 @@ body {
 
 .footer {
 	margin-top: 60px;
-	background-color: #4a90e2;
-	color: #fff;
+	
+	
 	margin-bottom: 0;
 	padding: 40px;
 }
@@ -51,7 +51,7 @@ body {
 /* Text Styles */
 
 body {
-	font-family: 'Fira Sans', sans-serif;
+	/*font-family: 'Fira Sans', sans-serif;*/
 }
 
 .page-heading {
@@ -82,7 +82,8 @@ body {
 }
 
 table thead th {
-	padding: 25px !important;
+	padding: 25px 0px 25px 20px !important;
+	border-bottom: none !important;
 	font-size: 16px;
 }
 
@@ -93,6 +94,17 @@ table {
 .table-responsive {
 	margin-bottom: 30px;
 }
+
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+	table thead th {
+		padding: 15px !important;
+		font-size: 13px;
+	}
+}
+
+
 
 
 
