@@ -1,0 +1,99 @@
+body {
+	margin-top: 75px;
+}
+
+/* Navigation Styles */
+
+.navbar.navbar-default {
+	background-color: #4a90e2;
+	color: #fff;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #fff;
+}
+
+.navbar-default .navbar-brand {
+    color: #fff;
+}
+
+.navbar {
+  min-height: 70px;
+  font-size: 16px;
+}
+
+.navbar-header {
+  min-height: 70px;
+}
+
+#nav-container {
+      margin-top: 10px;
+}
+
+.navbar-default .navbar-toggle {
+    background: #eee;
+}
+
+.fa-tachometer {
+	font-size: 20px;
+}
+
+
+.footer {
+	margin-top: 60px;
+	background-color: #4a90e2;
+	color: #fff;
+	margin-bottom: 0;
+	padding: 40px;
+}
+
+
+/* Text Styles */
+
+body {
+	font-family: 'Fira Sans', sans-serif;
+}
+
+.page-heading {
+	margin-top: 40px;
+}
+
+.sub-heading {
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+
+
+/* Main Content Styles */
+
+.status-fail {
+	background-color: #d54c53;
+	color: #fff;
+}
+
+.status-success {
+	background-color: #8cc04f;
+	color: #fff;
+}
+
+.status-doubt {
+	background-color: #f6b44b;
+	color: #fff;
+}
+
+table thead th {
+	padding: 25px !important;
+	font-size: 16px;
+}
+
+table {
+	margin-bottom: 0 !important;
+}
+
+.table-responsive {
+	margin-bottom: 30px;
+}
+
+
+
+
