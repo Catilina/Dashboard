@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head>
     <title>Dashboard</title>
     <meta charset="utf-8">
@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="css/dashboard.css">
     <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 </head>
-<body>
+<body ng-controller="mainCtrl">
 <nav class="navbar navbar-default navbar-fixed-top">
       <div id="nav-container" class="container">
         <div class="navbar-header">
@@ -24,37 +24,15 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#">Components</a></li>
-            <li><a href="#">Pipeline</a></li>
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/versions">Versions</a></li>
+            
             
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-<!-- nav class="navbar navbar-default navbar-fixed-top">
-  <div id="nav-container" class="container-fluid">
-    
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapse" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
-    </div>
-
-    <div class="collapse navbar-collapse" id="collapse">
-      <ul class="nav navbar-nav navbar-right">   
-          <li><a href="#" class="nav-link">Dashboard</a></li>   
-          <li><a href="#" class="nav-link">Components</a></li> 
-          <li><a href="#" class="nav-link">Pipeline</a></li>
-      </ul>
-    </div><
-  </div>
-</nav> -->
 
 <div id="main-content" class="container">
     <div class="row">
@@ -62,100 +40,21 @@
             <h1 class="page-heading">Dashboard</h1> 
             <h4 class="sub-heading">Recent Updates</h4>
 
-            <div class="row">
+            <div class="row" ng-repeat="version in versions">
                 <div class="col-sm-12">
-                    <div class="table-responsive component status-fail">
+                    <div class="table-responsive component status-{{version.status}}">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th class=""><i class="fa fa-times" aria-hidden="true"></i> &nbsp; Component Name</th>
-                                    <th class="">Pipeline Step</th>
-                                    <th class="">Version</th>
+                                    <th class="">{{version.name}}</th>
+                                    <th class="">{{version.step}}</th>
+                                    <th class="">{{version.versionName}}</th>
                                 </tr>
                             </thead>
                     
                         </table>
                     </div>
                 </div>
-
-                <div class="col-sm-12">
-                    <div class="table-responsive component status-success">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class=""><i class="fa fa-check" aria-hidden="true"></i> &nbsp; Component Name</th>
-                                    <th class="">Pipeline Step</th>
-                                    <th class="">Version</th>
-                                </tr>
-                            </thead>
-                    
-                        </table>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <div class="table-responsive component status-doubt">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class=""><i class="fa fa-question" aria-hidden="true"></i> &nbsp; Component Name</th>
-                                    <th class="">Pipeline Step</th>
-                                    <th class="">Version</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <div class="table-responsive component status-success">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class=""><i class="fa fa-check" aria-hidden="true"></i> &nbsp; Component Name</th>
-                                    <th class="">Pipeline Step</th>
-                                    <th class="">Version</th>
-                                </tr>
-                            </thead>
-                    
-                        </table>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <div class="table-responsive component status-success">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class=""><i class="fa fa-check" aria-hidden="true"></i> &nbsp; Component Name</th>
-                                    <th class="">Pipeline Step</th>
-                                    <th class="">Version</th>   
-                                </tr>
-                            </thead>
-                    
-                        </table>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <div class="table-responsive component status-doubt">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class=""><i class="fa fa-question" aria-hidden="true"></i> &nbsp; Component Name</th>
-                                    <th class="">Pipeline Step</th>
-                                    <th class="">Version</th>
-                                </tr>
-                            </thead>
-                    
-                        </table>
-                    </div>
-                </div>
-
-
-
-
-
             </div>
 
 
