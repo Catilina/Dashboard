@@ -1,27 +1,75 @@
-var app = angular.module('app', []);
+var app = angular.module('app', ['ui.bootstrap']);
+
+app.filter('startFrom', function() {
+	return function(data, start) {
+		return data.slice(start);
+	}
+});
 
 app.controller('mainCtrl', function ($scope, $http, $q) {
 	$scope.versions = [];
 	$scope.components = [];
 	$scope.steps = [];
+	$scope.stepStats = [];
+	$scope.statusStats = [];
 
 
 	$q.all([
 		getLastUpdate(),
-		getComponents(),
-		getSteps()
+		getSteps()	
 	]).then(function(data) {
-		var version = data[0];
-		var component = data[1];
-		var step = data[2];
-
+		var version = data[0][0];
+		var stats = data[0][1];
+		var stats2 = data[0][2];
+		var step = data[1];
 		setVersions(version);
-		setComponents(component);
+		setStepStats(stats);
+		setStatusStats(stats2);
 		setSteps(step);
 	}).then(function() {
-		setVersionNames();
 		setVersionSteps();
+		setStatusName();
+		google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawStepChart);
+        google.charts.setOnLoadCallback(drawStatusChart);
+		
 	})
+
+	
+      function drawStepChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Pipeline Steps', 'Amount of Components'],
+          [$scope.stepStats[0].name, $scope.stepStats[0].amount],
+          [$scope.stepStats[1].name, $scope.stepStats[1].amount],
+          [$scope.stepStats[2].name, $scope.stepStats[2].amount],
+          [$scope.stepStats[3].name, $scope.stepStats[3].amount]
+        ]);
+
+        var options = {
+          title: 'Amount of Components per Pipeline Step',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
+
+      function drawStatusChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Step Results', 'Amount of Components'],
+          [$scope.statusStats[0].name, $scope.statusStats[0].amount],
+          [$scope.statusStats[1].name, $scope.statusStats[1].amount],
+          [$scope.statusStats[2].name, $scope.statusStats[2].amount]
+        ]);
+
+        var options = {
+          title: 'Amount of Components per Status',
+          pieHole: 0.4,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart2'));
+        chart.draw(data, options);
+      }
 
 	function getLastUpdate() {
 		var deffered = $q.defer();
@@ -52,108 +100,45 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 
 	function setVersions(data) {
 		$scope.versions = data;
-		console.log(data);
-	}
-
-	function setComponents(data) {
-		$scope.components = data;
-		console.log(data);
-	}
-
-	function setSteps(data) {
-		$scope.steps = data;
-		console.log(data);
-	}
-
-	function setVersionNames() {
-		for (var i = 0; i < $scope.versions.length; i++) {
-			for (var j = 0; j  < $scope.components.length; j++) {
-				if ($scope.versions[i].name === $scope.components[j].id) {
-					$scope.versions[i].name = $scope.components[j].name;
-				}
-			}
-		}
 		
 	}
 
-	function setVersionSteps() {
-		for (var i = 0; i < $scope.versions.length; i++) {
-			for (var j = 0; j  < $scope.steps.length; j++) {
-				if ($scope.versions[i].step === $scope.steps[j].id) {
-					$scope.versions[i].step = $scope.steps[j].name;
-				}
-			}
-		}
-	}
-
-
-
-});
-
-app.controller('comCtrl', function($scope, $http, $q) {
-	$scope.versions = [];
-	$scope.components = [];
-	$scope.steps = [];
-
-
-	$q.all([
-		getVersions(),
-		getComponents(),
-		getSteps()
-	]).then(function(data) {
-		var version = data[0];
-		var component = data[1];
-		var step = data[2];
-
-		setVersions(version);
-		setComponents(component);
-		setSteps(step);
-	}).then(function() {
-		setVersionNames();
-		setVersionSteps();
-		setStatusName();
-	})
-
-	function getVersions() {
-		var deffered = $q.defer();
-		$http.get('/api/versions')
-			.success(function(response) {
-				deffered.resolve(response);
-			});
-		return deffered.promise; 	
-	}
-
-	function getComponents() {
-		var deffered = $q.defer();
-		$http.get('/api/components')
-			.success(function(response) {
-				deffered.resolve(response);
-			});
-		return deffered.promise; 	
-	}
-
-	function getSteps() {
-		var deffered = $q.defer();
-		$http.get('/api/steps')
-			.success(function(response) {
-				deffered.resolve(response);
-			});
-		return deffered.promise; 
-	}
-
-	function setVersions(data) {
-		$scope.versions = data;
-		console.log(data);
-	}
-
 	function setComponents(data) {
 		$scope.components = data;
-		console.log(data);
+		
 	}
 
 	function setSteps(data) {
 		$scope.steps = data;
-		console.log(data);
+		
+	}
+
+	function setStepStats(data) {
+		
+		for (var i = 0; i < data.length; i++) {
+			var stats = {
+				name: data[i].name,
+				amount: data[i].amount
+			}
+			
+			$scope.stepStats.push(stats);
+		}
+
+		
+
+		
+		
+	}
+
+	function setStatusStats(data) {
+		for (var i = 0; i < data.length; i++) {
+			var stats = {
+				name: data[i].name,
+				amount: data[i].amount
+			}
+			
+			$scope.statusStats.push(stats);
+		}
 	}
 
 	function setVersionNames() {
@@ -186,4 +171,141 @@ app.controller('comCtrl', function($scope, $http, $q) {
 			}
 		}
 	}
+
+	 
+
+
+
+});
+
+app.controller('comCtrl', function($scope, $http, $q) {
+	$scope.versions = [];
+	$scope.components = [];
+	$scope.steps = [];
+	$scope.pageSize = 15;
+	$scope.currentPage = 1;
+
+
+	$q.all([
+		getVersions(),
+		
+	]).then(function(data) {
+		var version = data[0];
+		
+
+		setVersions(version);
+		
+	}).then(function() {
+		
+		setStatusName();
+	})
+
+	function getVersions() {
+		var deffered = $q.defer();
+		$http.get('/api/versions')
+			.success(function(response) {
+				deffered.resolve(response);
+			});
+		return deffered.promise; 	
+	}
+
+	function getComponents() {
+		var deffered = $q.defer();
+		$http.get('/api/components')
+			.success(function(response) {
+				deffered.resolve(response);
+			});
+		return deffered.promise; 	
+	}
+
+	function getSteps() {
+		var deffered = $q.defer();
+		$http.get('/api/steps')
+			.success(function(response) {
+				deffered.resolve(response);
+			});
+		return deffered.promise; 
+	}
+
+	function setVersions(data) {
+		$scope.versions = data;
+	
+	}
+
+	function setComponents(data) {
+		$scope.components = data;
+		
+	}
+
+	function setSteps(data) {
+		$scope.steps = data;
+	
+	}
+
+
+	function setStatusName() {
+		for (var i = 0; i < $scope.versions.length; i++) {
+			switch($scope.versions[i].status) {
+				case 1: $scope.versions[i].statusName = "good"; break;
+				case 2: $scope.versions[i].statusName = "fail"; break;
+				case 3: $scope.versions[i].statusName = "doubtful"; break;
+			}
+		}
+	}
+});
+
+app.controller('pipCtrl', function($scope, $http, $q) {
+	
+	$scope.components = [];
+	$scope.steps = [];
+	$scope.pageSize = 5;
+	$scope.currentPage = 1;
+
+
+	$q.all([
+		getComponents(),
+		getSteps()
+		
+	]).then(function(data) {
+		var component = data[0];
+		var step = data[1];
+		
+
+		setComponents(component);
+		setSteps(step);
+		
+	});
+	
+
+	function getComponents() {
+		var deffered = $q.defer();
+		$http.get('/api/components')
+			.success(function(response) {
+				deffered.resolve(response);
+			});
+		return deffered.promise; 	
+	}
+
+	function getSteps() {
+		var deffered = $q.defer();
+		$http.get('/api/steps')
+			.success(function(response) {
+				deffered.resolve(response);
+			});
+		return deffered.promise; 
+	}
+
+
+	function setComponents(data) {
+		$scope.components = data;
+		
+	}
+
+	function setSteps(data) {
+		$scope.steps = data;
+	
+	}
+
+
+	
 });

@@ -10,5 +10,6 @@
     "ejs": "*",
     "express": "~4.9.8",
     "mysql": "^2.11.1"
-  }
+  },
+  "devDependencies": {}
 }

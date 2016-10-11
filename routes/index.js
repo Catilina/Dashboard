@@ -9,6 +9,10 @@ router.get('/', function(req, res) {
 
 router.get('/versions', function(req, res) {
 	res.render('version');
-})
+});
+
+router.get('/pipeline', function(req, res) {
+	res.render('pipeline');
+});
 
 module.exports = router;

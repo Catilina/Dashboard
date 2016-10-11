@@ -20,12 +20,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
+          <a class="navbar-brand" href="/"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li ><a href="/">Home</a></li>
             <li class="active"><a href="/versions">Versions</a></li>
+            <!-- <li><a href="/pipeline">Pipeline</a></li>  -->
             
             
           </ul>
@@ -39,7 +40,14 @@
     <div class="row">
         <div class="col-xs-12 col-sm-12  col-md-10 col-md-offset-1">
             <h1 class="page-heading">Versions</h1>
+            <p class="label-heading">Search Table by Component, Step, Version, or Status</p>
 
+            <div class="row">
+                <div class="col-sm-6">
+                    <input id="" ng-model="search"  type="text" class="form-control" required minlength="2" placeholder="Search">
+                </div>
+            </div>
+        
             <div class="row" >
                 <div class="col-sm-12">
                     <div class="table-responsive component" style="margin-top: 20px">
@@ -53,7 +61,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              <tr ng-repeat="version in versions">
+                              <tr ng-repeat="version in versions | filter:search | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize ">
                                 <td>{{version.name}}</td>
                                 <td>{{version.step}}</td>
                                 <td>{{version.versionName}}</td>
@@ -63,6 +71,8 @@
                     
                         </table>
                     </div>
+
+                    <ul uib-pager  total-items="versions.length" ng-model="currentPage" items-per-page="pageSize"></ul>
                 </div>
             </div>
             
@@ -84,6 +94,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/ui-bootstrap.min.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>
