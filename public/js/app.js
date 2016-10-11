@@ -37,13 +37,16 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 
 	
       function drawStepChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Pipeline Steps', 'Amount of Components'],
-          [$scope.stepStats[0].name, $scope.stepStats[0].amount],
-          [$scope.stepStats[1].name, $scope.stepStats[1].amount],
-          [$scope.stepStats[2].name, $scope.stepStats[2].amount],
-          [$scope.stepStats[3].name, $scope.stepStats[3].amount]
-        ]);
+        var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Pipeline Steps');
+          data.addColumn('number', 'Amount of Components');
+          data.addRows($scope.stepStats.length);
+          
+          for (var i = 0; i < $scope.stepStats.length; i++) {
+          		data.setCell(i, 0, $scope.stepStats[i].name);
+          		data.setCell(i, 1, $scope.stepStats[i].amount);
+          }
+        
 
         var options = {
           title: 'Amount of Components per Pipeline Step',
