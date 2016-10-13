@@ -187,20 +187,26 @@ app.controller('comCtrl', function($scope, $http, $q) {
 	$scope.steps = [];
 	$scope.pageSize = 15;
 	$scope.currentPage = 1;
+	$scope.tableData = [];
+	$scope.selectComponent = 'All Components';
 
 
 	$q.all([
 		getVersions(),
+		getComponents()
 		
 	]).then(function(data) {
 		var version = data[0];
+		var component = data[1]
 		
 
 		setVersions(version);
+		setComponents(component);
 		
 	}).then(function() {
 		
 		setStatusName();
+		$scope.tableData = $scope.versions;
 	})
 
 	function getVersions() {
@@ -254,6 +260,25 @@ app.controller('comCtrl', function($scope, $http, $q) {
 				case 3: $scope.versions[i].statusName = "doubtful"; break;
 			}
 		}
+	}
+
+	$scope.getTableData = function(data) {
+		
+		if (data === 'All Components') {
+			$scope.tableData = $scope.versions;
+		} else {
+
+			var results = [];
+			for (var i = 0; i < $scope.versions.length; i++) {
+				if ($scope.versions[i].name === data) {
+					results.push($scope.versions[i]);
+				}
+			}
+			
+			$scope.tableData = results;
+		}
+
+
 	}
 });
 

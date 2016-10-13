@@ -7,8 +7,8 @@ router.get('/', function(req, res) {
     res.render('index');
 });
 
-router.get('/versions', function(req, res) {
-	res.render('version');
+router.get('/components', function(req, res) {
+	res.render('component');
 });
 
 router.get('/pipeline', function(req, res) {

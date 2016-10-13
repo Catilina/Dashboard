@@ -25,7 +25,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li ><a href="/">Home</a></li>
-            <li class="active"><a href="/versions">Versions</a></li>
+            <li class="active"><a href="/components">Components</a></li>
             <!-- <li><a href="/pipeline">Pipeline</a></li>  -->
             
             
@@ -39,12 +39,20 @@
 <div id="main-content" class="container">
     <div class="row">
         <div class="col-xs-12 col-sm-12  col-md-10 col-md-offset-1">
-            <h1 class="page-heading">Versions</h1>
+            <h1 class="page-heading">Components</h1>
             <p class="label-heading">Search Table by Component, Step, Version, or Status</p>
+
 
             <div class="row">
                 <div class="col-sm-6">
                     <input id="" ng-model="search"  type="text" class="form-control" required minlength="2" placeholder="Search">
+                </div>
+                <div class="col-sm-6">
+                    <select class="form-control pull-right" id="sel1" ng-model="selectComponent" ng-change="getTableData(selectComponent)">
+                        <option val="All Components" selected>All Components</option>
+                        <option ng-repeat="component in components" val="{{component.name}}">{{component.name}}</option>
+                        
+                      </select>
                 </div>
             </div>
         
@@ -61,7 +69,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                              <tr ng-repeat="version in versions | filter:search | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize ">
+                              <tr ng-repeat="version in tableData | filter:search | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize | orderBy: '-versionName'">
                                 <td>{{version.name}}</td>
                                 <td>{{version.step}}</td>
                                 <td>{{version.versionName}}</td>
@@ -72,7 +80,7 @@
                         </table>
                     </div>
 
-                    <ul uib-pager  total-items="versions.length" ng-model="currentPage" items-per-page="pageSize"></ul>
+                    <ul uib-pager  total-items="tableData.length" ng-model="currentPage" items-per-page="pageSize"></ul>
                 </div>
             </div>
             
