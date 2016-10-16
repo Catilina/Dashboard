@@ -1,14 +1,49 @@
-var app = angular.module('app', ['ui.bootstrap']);
+var app = angular.module('app', ['ui.bootstrap', 'ngRoute']);
+
+app.config(function($routeProvider, $locationProvider) {
+	$routeProvider
+
+		.when('/', {
+			templateUrl: '/partials/index.html',
+			controller: 'mainCtrl'
+
+		})
+
+		.when('/components', {
+			templateUrl: '/partials/component.html',
+			controller: 'comCtrl'
+		})
+
+		// .when('/pipeline', {
+		// 	templateUrl: '/partials/pip.html',
+		// 	controller: 'pipCtrl'
+		// })
+
+		.otherwise({
+			redirectTo: '/'
+		});
+
+		// enable html5Mode for pushstate ('#'-less URLs)
+	    $locationProvider.html5Mode(true);
+	    $locationProvider.hashPrefix('!');
+});
 
 app.filter('startFrom', function() {
 	return function(data, start) {
+		
 		return data.slice(start);
 	}
 });
 
+app.controller('routeCtrl', function ($scope, $location) {
+	$scope.isActive = function(route) {
+
+        return route === $location.path();
+    }
+});
+
 app.controller('mainCtrl', function ($scope, $http, $q) {
 	$scope.versions = [];
-	$scope.components = [];
 	$scope.steps = [];
 	$scope.stepStats = [];
 	$scope.statusStats = [];
@@ -27,13 +62,13 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 		setStatusStats(stats2);
 		setSteps(step);
 	}).then(function() {
-		setVersionSteps();
-		setStatusName();
 		google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawStepChart);
         google.charts.setOnLoadCallback(drawStatusChart);
 		
 	})
+
+	
 
 	
       function drawStepChart() {
@@ -50,10 +85,12 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 
         var options = {
           title: 'Amount of Components per Pipeline Step',
-          pieHole: 0.4,
+          bar: {groupWidth: "50%"},
+          legend: { position: "none" },
+         
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        var chart = new google.visualization.ColumnChart(document.getElementById('donutchart'));
         chart.draw(data, options);
       }
 
@@ -66,8 +103,9 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
         ]);
 
         var options = {
-          title: 'Amount of Components per Status',
-          pieHole: 0.4,
+          title: 'Percentage of Components per Status',
+          
+         
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('donutchart2'));
@@ -83,15 +121,7 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 		return deffered.promise; 	
 	}
 
-	function getComponents() {
-		var deffered = $q.defer();
-		$http.get('/api/components')
-			.success(function(response) {
-				deffered.resolve(response);
-			});
-		return deffered.promise; 	
-	}
-
+	
 	function getSteps() {
 		var deffered = $q.defer();
 		$http.get('/api/steps')
@@ -106,10 +136,6 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 		
 	}
 
-	function setComponents(data) {
-		$scope.components = data;
-		
-	}
 
 	function setSteps(data) {
 		$scope.steps = data;
@@ -117,66 +143,13 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 	}
 
 	function setStepStats(data) {
-		
-		for (var i = 0; i < data.length; i++) {
-			var stats = {
-				name: data[i].name,
-				amount: data[i].amount
-			}
-			
-			$scope.stepStats.push(stats);
-		}
-
-		
-
-		
+		$scope.stepStats = data;	
 		
 	}
 
 	function setStatusStats(data) {
-		for (var i = 0; i < data.length; i++) {
-			var stats = {
-				name: data[i].name,
-				amount: data[i].amount
-			}
-			
-			$scope.statusStats.push(stats);
-		}
+		$scope.statusStats = data;
 	}
-
-	function setVersionNames() {
-		for (var i = 0; i < $scope.versions.length; i++) {
-			for (var j = 0; j  < $scope.components.length; j++) {
-				if ($scope.versions[i].name === $scope.components[j].id) {
-					$scope.versions[i].name = $scope.components[j].name;
-				}
-			}
-		}
-		
-	}
-
-	function setVersionSteps() {
-		for (var i = 0; i < $scope.versions.length; i++) {
-			for (var j = 0; j  < $scope.steps.length; j++) {
-				if ($scope.versions[i].step === $scope.steps[j].id) {
-					$scope.versions[i].step = $scope.steps[j].name;
-				}
-			}
-		}
-	}
-
-	function setStatusName() {
-		for (var i = 0; i < $scope.versions.length; i++) {
-			switch($scope.versions[i].status) {
-				case 1: $scope.versions[i].statusName = "good"; break;
-				case 2: $scope.versions[i].statusName = "fail"; break;
-				case 3: $scope.versions[i].statusName = "doubtful"; break;
-			}
-		}
-	}
-
-	 
-
 
 
 });
@@ -184,7 +157,6 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 app.controller('comCtrl', function($scope, $http, $q) {
 	$scope.versions = [];
 	$scope.components = [];
-	$scope.steps = [];
 	$scope.pageSize = 15;
 	$scope.currentPage = 1;
 	$scope.tableData = [];
@@ -197,15 +169,12 @@ app.controller('comCtrl', function($scope, $http, $q) {
 		
 	]).then(function(data) {
 		var version = data[0];
-		var component = data[1]
-		
+		var component = data[1];
 
 		setVersions(version);
 		setComponents(component);
 		
 	}).then(function() {
-		
-		setStatusName();
 		$scope.tableData = $scope.versions;
 	})
 
@@ -227,14 +196,7 @@ app.controller('comCtrl', function($scope, $http, $q) {
 		return deffered.promise; 	
 	}
 
-	function getSteps() {
-		var deffered = $q.defer();
-		$http.get('/api/steps')
-			.success(function(response) {
-				deffered.resolve(response);
-			});
-		return deffered.promise; 
-	}
+	
 
 	function setVersions(data) {
 		$scope.versions = data;
@@ -246,21 +208,7 @@ app.controller('comCtrl', function($scope, $http, $q) {
 		
 	}
 
-	function setSteps(data) {
-		$scope.steps = data;
-	
-	}
 
-
-	function setStatusName() {
-		for (var i = 0; i < $scope.versions.length; i++) {
-			switch($scope.versions[i].status) {
-				case 1: $scope.versions[i].statusName = "good"; break;
-				case 2: $scope.versions[i].statusName = "fail"; break;
-				case 3: $scope.versions[i].statusName = "doubtful"; break;
-			}
-		}
-	}
 
 	$scope.getTableData = function(data) {
 		
@@ -282,58 +230,58 @@ app.controller('comCtrl', function($scope, $http, $q) {
 	}
 });
 
-app.controller('pipCtrl', function($scope, $http, $q) {
+// app.controller('pipCtrl', function($scope, $http, $q, $location) {
 	
-	$scope.components = [];
-	$scope.steps = [];
-	$scope.pageSize = 5;
-	$scope.currentPage = 1;
+// 	$scope.components = [];
+// 	$scope.steps = [];
+// 	$scope.pageSize = 5;
+// 	$scope.currentPage = 1;
 
 
-	$q.all([
-		getComponents(),
-		getSteps()
+// 	$q.all([
+// 		getComponents(),
+// 		getSteps()
 		
-	]).then(function(data) {
-		var component = data[0];
-		var step = data[1];
+// 	]).then(function(data) {
+// 		var component = data[0];
+// 		var step = data[1];
 		
 
-		setComponents(component);
-		setSteps(step);
+// 		setComponents(component);
+// 		setSteps(step);
 		
-	});
+// 	});
 	
 
-	function getComponents() {
-		var deffered = $q.defer();
-		$http.get('/api/components')
-			.success(function(response) {
-				deffered.resolve(response);
-			});
-		return deffered.promise; 	
-	}
+// 	function getComponents() {
+// 		var deffered = $q.defer();
+// 		$http.get('/api/components')
+// 			.success(function(response) {
+// 				deffered.resolve(response);
+// 			});
+// 		return deffered.promise; 	
+// 	}
 
-	function getSteps() {
-		var deffered = $q.defer();
-		$http.get('/api/steps')
-			.success(function(response) {
-				deffered.resolve(response);
-			});
-		return deffered.promise; 
-	}
+// 	function getSteps() {
+// 		var deffered = $q.defer();
+// 		$http.get('/api/steps')
+// 			.success(function(response) {
+// 				deffered.resolve(response);
+// 			});
+// 		return deffered.promise; 
+// 	}
 
 
-	function setComponents(data) {
-		$scope.components = data;
+// 	function setComponents(data) {
+// 		$scope.components = data;
 		
-	}
+// 	}
 
-	function setSteps(data) {
-		$scope.steps = data;
+// 	function setSteps(data) {
+// 		$scope.steps = data;
 	
-	}
+// 	}
 
 
 	
-});
+// });

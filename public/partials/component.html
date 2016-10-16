@@ -1,0 +1,49 @@
+<h1 class="page-heading">Components</h1>
+    <p class="label-heading">Search Table by Component, Step, Version, or Status</p>
+<div class="row">
+    <div class="col-sm-6" style="margin-top: 10px;">
+        <input id="" ng-model="search"  type="text" class="form-control" required minlength="2" placeholder="Search">
+    </div>
+    <div class="col-sm-6" style="margin-top: 10px;">
+        <select class="form-control pull-right" id="sel1" ng-model="selectComponent" ng-change="getTableData(selectComponent)">
+            <option val="All Components" selected>All Components</option>
+            <option ng-repeat="component in components" val="{{component.name}}" ng-cloak>{{component.name}}</option>
+
+          </select>
+    </div>
+</div>
+
+<div class="row" >
+    <div class="col-sm-12">
+        <div class="table-responsive component" style="margin-top: 20px">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="">Component</th>
+                        <th class="">Step</th>
+                        <th class="">Version</th>
+                        <th class="">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="version in tableData | filter:search | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize | orderBy: '-versionName'">
+                    <td ng-cloak>{{version.name}}</td>
+                    <td ng-cloak>{{version.step}}</td>
+                    <td ng-cloak>{{version.versionName}}</td>
+                    <td ng-cloak>{{version.status}}</td>
+                  </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <ul uib-pager  total-items="tableData.length" ng-model="currentPage" items-per-page="pageSize"></ul>
+    </div>
+</div>
+
+      
+
+
+
+
+  

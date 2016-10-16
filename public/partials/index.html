@@ -1,0 +1,77 @@
+<h1 class="page-heading">Dashboard</h1> 
+<div class=" row" style="margin-top: 40px">
+    <div class="clearfix"></div>
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <a class="panel-custom" data-toggle="collapse" href="#collapse">
+                <div class="panel-heading update-panel">
+                    <h4>
+                        Component Pipeline Step Breakdown
+                    </h4>
+                </div>
+            </a>
+
+            <div id="donutchart" class="chart"></div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <a class="panel-custom" data-toggle="collapse" href="#collapse">
+                <div class="panel-heading update-panel">
+                    <h4>
+                        Component Status Breakdown
+                    </h4>
+                </div>
+            </a>
+
+            <div id="donutchart2" class="chart"></div>
+        </div>
+    </div>
+</div>
+
+
+
+    <div class="panel panel-default">
+        <a class="panel-custom" data-toggle="collapse" href="#collapse">
+            <div class="panel-heading update-panel">
+                <h4>
+                    Recent Updates 
+                </h4>
+            </div>
+        </a>
+                            
+        <div class="table-responsive"> 
+                                    
+        <table id="attendTable" class="table table-bordered ">
+            <thead>
+                <tr >
+                    <th>Component</th>
+                    <th>Version</th>
+                    <th>Step</th>
+                    <th>Status</th>                                                        
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="version in versions" class="">
+                    <td ng-cloak>{{version.name}}</td>
+                    <td ng-cloak>{{version.versionName}}</td>
+                    <td ng-cloak>{{version.step}}</td>
+                    <td ng-cloak>{{version.status}}</td>
+                </tr>
+            </tbody>
+        </table>                                
+
+
+        </div>
+                                
+                            
+ </div>
+
+     
+
+
+   
+
+
+   

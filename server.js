@@ -1,3 +1,16 @@
+var throng = require('throng');
+
+var WORKERS = process.env.WEB_CONCURRENCY || 1;
+
+throng({
+  workers: WORKERS,
+  lifetime: Infinity,
+  start: start
+});
+
+
+function start() {
+
 var express = require('express');
 var app = express();
 
@@ -17,10 +30,14 @@ app.set('view engine', 'ejs');
 // make express look in the public directory for assets (css/js/img)
 app.use(express.static(__dirname + '/public'));
 
-
-app.use('/', routes);
 app.use('/api', api);
+app.use('/', routes);
+app.use('*', routes);
+
+
 
 app.listen(port, function() {
-    console.log('Our app is running on http://localhost:' + port);
+    //console.log('Our app is running on http://localhost:' + port);
 });
+
+}

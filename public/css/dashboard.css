@@ -67,6 +67,10 @@ body {
 	margin-bottom: 10px;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+        display: none !important;
+}
+
 
 /* Main Content Styles */
 
@@ -125,6 +129,21 @@ table {
 		font-size: 13px;
 	}
 }
+
+
+.chart {
+  width: 100%; 
+  min-height: 350px;
+}
+
+/*.chart:nth-child(2) {
+	margin: 0 auto;
+}*/
+
+
+
+
+
 
 
 
