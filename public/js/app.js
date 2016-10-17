@@ -47,6 +47,7 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 	$scope.steps = [];
 	$scope.stepStats = [];
 	$scope.statusStats = [];
+	$scope.showLoader = true;
 
 
 	$q.all([
@@ -65,7 +66,7 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 		google.charts.load("current", {packages:["corechart"]});
         google.charts.setOnLoadCallback(drawStepChart);
         google.charts.setOnLoadCallback(drawStatusChart);
-		
+		$scope.showLoader = false;
 	})
 
 	
@@ -159,8 +160,10 @@ app.controller('comCtrl', function($scope, $http, $q) {
 	$scope.components = [];
 	$scope.pageSize = 15;
 	$scope.currentPage = 1;
+	$scope.maxSize = 5;
 	$scope.tableData = [];
 	$scope.selectComponent = 'All Components';
+	$scope.showLoader = true;
 
 
 	$q.all([
@@ -176,6 +179,7 @@ app.controller('comCtrl', function($scope, $http, $q) {
 		
 	}).then(function() {
 		$scope.tableData = $scope.versions;
+		$scope.showLoader = false;
 	})
 
 	function getVersions() {

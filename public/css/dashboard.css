@@ -47,6 +47,23 @@ body {
 	padding: 40px;
 }
 
+.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
+	color: #fff;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: #fff;
+}
+
+.navbar-default .navbar-toggle {
+	background-color: transparent;
+	border: none;
+}
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+	background-color: transparent;
+}
+
 
 /* Text Styles */
 
@@ -136,9 +153,9 @@ table {
   min-height: 350px;
 }
 
-/*.chart:nth-child(2) {
-	margin: 0 auto;
-}*/
+.loader {
+	padding-top: 20%;
+}
 
 
 

@@ -8,7 +8,6 @@
         <select class="form-control pull-right" id="sel1" ng-model="selectComponent" ng-change="getTableData(selectComponent)">
             <option val="All Components" selected>All Components</option>
             <option ng-repeat="component in components" val="{{component.name}}" ng-cloak>{{component.name}}</option>
-
           </select>
     </div>
 </div>
@@ -37,7 +36,11 @@
             </table>
         </div>
 
-        <ul uib-pager  total-items="tableData.length" ng-model="currentPage" items-per-page="pageSize"></ul>
+        <div ng-show="showLoader">
+            <img class="center-block img-responsive" src="/img/load.svg">
+        </div>
+
+        <ul uib-pagination  total-items="tableData.length" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" force-ellipses="true" items-per-page="pageSize"></ul>
     </div>
 </div>
 

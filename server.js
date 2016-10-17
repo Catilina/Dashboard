@@ -1,21 +1,9 @@
-var throng = require('throng');
-
-var WORKERS = process.env.WEB_CONCURRENCY || 1;
-
-throng({
-  workers: WORKERS,
-  lifetime: Infinity,
-  start: start
-});
-
-
-function start() {
-
 var express = require('express');
 var app = express();
+var compression = require('compression');
 
-
-
+// compress http payload
+app.use(compression());
 
 var routes = require('./routes/index');
 var api = require('./api/index');
@@ -23,6 +11,9 @@ var api = require('./api/index');
 // set the port of our application
 // process.env.PORT lets the port be set by Heroku
 var port = process.env.PORT || 8080;
+
+// pages are cached
+app.set('view cache', true);
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -40,4 +31,4 @@ app.listen(port, function() {
     //console.log('Our app is running on http://localhost:' + port);
 });
 
-}
+

@@ -11,7 +11,11 @@
                 </div>
             </a>
 
-            <div id="donutchart" class="chart"></div>
+            <div id="donutchart" class="chart">
+                <div class="load-container" ng-show="showLoader">
+                    <img class="loader center-block img-responsive" src="/img/load.svg">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -25,7 +29,11 @@
                 </div>
             </a>
 
-            <div id="donutchart2" class="chart"></div>
+            <div id="donutchart2" class="chart">
+                <div ng-show="showLoader">
+                    <img class="loader center-block img-responsive" src="/img/load.svg">
+                </div>
+            </div>
         </div>
     </div>
 </div>
