@@ -14,11 +14,6 @@ app.config(function($routeProvider, $locationProvider) {
 			controller: 'comCtrl'
 		})
 
-		// .when('/pipeline', {
-		// 	templateUrl: '/partials/pip.html',
-		// 	controller: 'pipCtrl'
-		// })
-
 		.otherwise({
 			redirectTo: '/'
 		});
@@ -40,6 +35,16 @@ app.controller('routeCtrl', function ($scope, $location) {
 
         return route === $location.path();
     }
+
+    $scope.closeNav = function() {
+
+    	if (window.innerWidth <= 768 ) {
+				$('.navbar-toggle').click();
+		}
+    	
+    	
+    }
+
 });
 
 app.controller('mainCtrl', function ($scope, $http, $q) {
@@ -93,6 +98,10 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 
         var chart = new google.visualization.ColumnChart(document.getElementById('donutchart'));
         chart.draw(data, options);
+
+        $(window).resize(function () {
+    		chart.draw(data, options);
+		});
       }
 
       function drawStatusChart() {
@@ -105,12 +114,14 @@ app.controller('mainCtrl', function ($scope, $http, $q) {
 
         var options = {
           title: 'Percentage of Components per Status',
-          
-         
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('donutchart2'));
         chart.draw(data, options);
+
+        $(window).resize(function () {
+    		chart.draw(data, options);
+		});
       }
 
 	function getLastUpdate() {
@@ -234,58 +245,3 @@ app.controller('comCtrl', function($scope, $http, $q) {
 	}
 });
 
-// app.controller('pipCtrl', function($scope, $http, $q, $location) {
-	
-// 	$scope.components = [];
-// 	$scope.steps = [];
-// 	$scope.pageSize = 5;
-// 	$scope.currentPage = 1;
-
-
-// 	$q.all([
-// 		getComponents(),
-// 		getSteps()
-		
-// 	]).then(function(data) {
-// 		var component = data[0];
-// 		var step = data[1];
-		
-
-// 		setComponents(component);
-// 		setSteps(step);
-		
-// 	});
-	
-
-// 	function getComponents() {
-// 		var deffered = $q.defer();
-// 		$http.get('/api/components')
-// 			.success(function(response) {
-// 				deffered.resolve(response);
-// 			});
-// 		return deffered.promise; 	
-// 	}
-
-// 	function getSteps() {
-// 		var deffered = $q.defer();
-// 		$http.get('/api/steps')
-// 			.success(function(response) {
-// 				deffered.resolve(response);
-// 			});
-// 		return deffered.promise; 
-// 	}
-
-
-// 	function setComponents(data) {
-// 		$scope.components = data;
-		
-// 	}
-
-// 	function setSteps(data) {
-// 		$scope.steps = data;
-	
-// 	}
-
-
-	
-// });
