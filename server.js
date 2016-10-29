@@ -25,10 +25,4 @@ app.use('/api', api);
 app.use('/', routes);
 app.use('*', routes);
 
-
-
-app.listen(port, function() {
-    //console.log('Our app is running on http://localhost:' + port);
-});
-
-
+app.listen(port);

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/img/cd.ico" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/dashboard.css">
@@ -27,7 +28,7 @@
           <ul class="nav navbar-nav">
             <li ng-class="{active: isActive('/')} "><a href="/" ng-click="closeNav()">Home</a></li>
             <li ng-class="{active: isActive('/components')}"><a href="/components" ng-click="closeNav()">Components</a></li>
-            <!-- <li><a href="/pipeline">Pipeline</a></li> --> 
+            <!-- <li><a href="/pipeline">Pipeline</a></li> -->
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -37,15 +38,15 @@
 <div id="main-content" class="container">
     <div class="row">
         <div class="col-md-12">
-            
+
         <div ng-view></div>
-                 
+
         </div>
     </div>
 </div>
 
 
-   
+
 
 
     <footer class="footer">

@@ -1,4 +1,4 @@
-<h1 class="page-heading">Dashboard</h1> 
+<h1 class="page-heading">Dashboard</h1>
 <div class=" row" style="margin-top: 40px">
     <div class="clearfix"></div>
     <div class="col-sm-6">
@@ -44,42 +44,37 @@
         <a class="panel-custom" data-toggle="collapse" href="#collapse">
             <div class="panel-heading update-panel">
                 <h4>
-                    Recent Updates 
+                    Recent Updates
                 </h4>
             </div>
         </a>
-                            
-        <div class="table-responsive"> 
-                                    
+
+        <div class="table-responsive">
+
         <table id="attendTable" class="table table-bordered ">
             <thead>
                 <tr >
                     <th>Component</th>
                     <th>Version</th>
                     <th>Step</th>
-                    <th>Status</th>                                                        
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="version in versions" class="">
-                    <td ng-cloak>{{version.name}}</td>
-                    <td ng-cloak>{{version.versionName}}</td>
-                    <td ng-cloak>{{version.step}}</td>
-                    <td ng-cloak>{{version.status}}</td>
+                    <td ng-cloak>{{version.component_name}}</td>
+                    <td ng-cloak>{{version.version_num}}</td>
+                    <td ng-cloak>{{version.step_name}}</td>
+                    <td ng-cloak>{{version.status_name}}</td>
                 </tr>
             </tbody>
-        </table>                                
+        </table>
 
 
         </div>
-                                
-                            
+        <div ng-show="showLoader">
+            <img class="center-block img-responsive" src="/img/load.svg">
+        </div>
+
+
  </div>
-
-     
-
-
-   
-
-
-   
